@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/language_model.dart';
+import '../screens/lesson_list_screen.dart'; // Import the new screen
 
 class LanguageCard extends StatelessWidget {
   final Language language;
@@ -13,7 +14,12 @@ class LanguageCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           // Navigate to lesson list for this language
-          print('Tapped on ${language.name}');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LessonListScreen(language: language),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),

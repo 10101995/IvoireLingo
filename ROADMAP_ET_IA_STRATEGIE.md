@@ -1,6 +1,6 @@
 # IvoireLingo : Roadmap Technique & Stratégie IA
 
-Ce document sert de source de vérité pour l'architecture, le plan de développement et la stratégie de collecte de données pour l'intelligence artificielle du projet IvoireLingo.
+**Note pour l'IA :** Ce document est la seule source de vérité pour la gestion du projet. Ne pas créer d'autres fichiers de suivi (comme `blueprint.md`). Mettre à jour cette roadmap de manière structurée après chaque ajout ou modification majeure du projet.
 
 ## 1. Arborescence du Projet
 
@@ -19,10 +19,12 @@ Voici la structure de dossiers cible pour une architecture propre et évolutive.
 |   |   |-- lesson_screen.dart
 |   |   |-- quiz_screen.dart
 |   |   |-- profile_screen.dart
+|   |   |-- recording_screen.dart
 |   |
 |   |-- widgets/                # Widgets réutilisables à travers l'application
 |   |   |-- language_card.dart
 |   |   |-- lesson_item.dart
+|   |   |-- phrase_item.dart
 |   |   |-- quiz_option.dart
 |   |   |-- audio_player_widget.dart
 |   |
@@ -35,6 +37,7 @@ Voici la structure de dossiers cible pour une architecture propre et évolutive.
 |   |-- services/               # Logique métier et communication avec les APIs externes
 |   |   |-- auth_service.dart       # Authentification Firebase (connexion, etc.)
 |   |   |-- firestore_service.dart  # Interaction avec la base de données Firestore
+|   |   |-- audio_service.dart      # Gestion de la lecture audio
 |   |   |-- audio_recording_service.dart # Gestion de l'enregistrement audio
 |   |
 |   |-- data/                   # Données statiques ou sources de données brutes
@@ -98,30 +101,30 @@ Voici la structure de dossiers cible pour une architecture propre et évolutive.
 }
 ```
 
-## 3. Checklist de Développement (Phase 1)
+## 3. Checklist de Développement
 
-- [ ] **Setup Firebase & CI/CD**
-  - [ ] Créer le projet Firebase.
-  - [ ] Configurer Firestore et les règles de sécurité de base.
-  - [ ] Configurer Firebase Authentication.
-  - [ ] Mettre en place `flutterfire_cli` pour la configuration Flutter.
-- [ ] **Écran d'Accueil (Home Screen)**
-  - [X] Créer `home_screen.dart` avec la liste des 4 langues initiales.
-  - [X] Créer le widget `language_card.dart`.
-  - [ ] Mettre en place la navigation vers un écran de leçons (vide pour l'instant).
-- [ ] **Structure des Leçons & Quiz**
-  - [ ] Créer les modèles Dart (`lesson_model.dart`, `quiz_model.dart`).
-  - [ ] Créer l'écran `lesson_list_screen.dart` qui affiche les leçons pour une langue.
-  - [ ] Développer l'écran `lesson_screen.dart` pour afficher les phrases.
-  - [ ] Implémenter le premier type de quiz (`multiple_choice_text`).
-- [ ] **Fonctionnalité Audio**
-  - [ ] Intégrer un package de lecture audio (ex: `just_audio`).
-  - [ ] Lire les phrases des leçons depuis une URL distante.
-- [ ] **Contribution IA (Crowdsourcing)**
-  - [ ] Créer l'UI pour la fonctionnalité "Enregistrer votre voix".
-  - [ ] Intégrer un package d'enregistrement audio (ex: `record`).
-  - [ ] Uploader le fichier audio (WAV) et ses métadonnées sur Firebase Storage.
+### Phase 1 : MVP et Intégration Firebase (Terminée)
+- [X] **Setup Firebase & CI/CD**
+- [X] **Écran d'Accueil (Home Screen)**
+- [X] **Structure des Leçons & Quiz (statique)**
+- [X] **Fonctionnalité Audio (lecture)**
+- [X] **Contribution IA (Crowdsourcing)**
+- [X] **Dynamisation complète avec Firestore et Storage**
 
+### Phase 2 : Backlog et Prochaines Étapes
+- [ ] **Gestion de Profil Utilisateur**
+  - [ ] Permettre aux utilisateurs de s'inscrire/connecter avec e-mail.
+  - [ ] Permettre de gérer le profil (nom, photo).
+- [ ] **Système de Gamification**
+  - [ ] Ajouter des points, badges et niveaux pour l'apprentissage.
+  - [ ] Mettre en place un classement des contributeurs.
+- [ ] **Quiz et Exercices Interactifs**
+  - [ ] Créer de nouveaux types de quiz (ex: `listening_challenge`).
+- [ ] **Mode Hors Ligne**
+  - [ ] Permettre l'accès aux leçons téléchargées sans connexion.
+- [ ] **Interface d'Administration**
+  - [ ] Créer une interface web simple pour gérer le contenu (langues, leçons).
+  - [ ] Mettre en place un système de validation des contributions audio.
 
 ## 4. Stratégie d'Entraînement de l'IA (Low-Resource Languages)
 

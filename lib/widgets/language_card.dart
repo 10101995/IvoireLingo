@@ -1,44 +1,36 @@
 import 'package:flutter/material.dart';
-import '../models/language_model.dart';
-import '../screens/lesson_list_screen.dart'; // Import the new screen
 
 class LanguageCard extends StatelessWidget {
-  final Language language;
+  final String languageName;
+  final String flag;
+  final VoidCallback onTap;
 
-  const LanguageCard({super.key, required this.language});
+  const LanguageCard({super.key, required this.languageName, required this.flag, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: language.color.withOpacity(0.1),
-      child: InkWell(
-        onTap: () {
-          // Navigate to lesson list for this language
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LessonListScreen(language: language),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(15.0),
+      child: Card(
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              flag,
+              style: const TextStyle(fontSize: 40.0),
             ),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Placeholder for a proper icon/image
-              Text(language.flagIcon, style: const TextStyle(fontSize: 40)),
-              const SizedBox(height: 10),
-              Text(
-                language.name,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: language.color,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+            const SizedBox(height: 10.0),
+            Text(
+              languageName,
+              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

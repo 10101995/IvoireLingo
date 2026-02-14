@@ -1,46 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../models/language_model.dart';
-import '../models/lesson_model.dart';
-import 'lesson_detail_screen.dart'; // Import the new screen
+import 'package:myapp/models/lesson_model.dart';
+import 'package:myapp/screens/lesson_screen.dart';
+import 'package:myapp/services/firestore_service.dart';
+import 'package:myapp/widgets/lesson_item.dart';
 
 class LessonListScreen extends StatelessWidget {
-  final Language language;
+  final String language;
 
   const LessonListScreen({super.key, required this.language});
 
   @override
   Widget build(BuildContext context) {
-    // Dummy data for lessons
-    final List<Lesson> lessons = [
-      Lesson(id: '1', title: 'Salutations de base', description: 'Apprenez à dire bonjour, bonsoir, etc.'),
-      Lesson(id: '2', title: 'Présentations', description: 'Comment vous présenter et demander le nom de quelqu\'un.'),
-      Lesson(id: '3', title: 'Les chiffres de 1 à 10', description: 'Compter jusqu\'à dix dans la langue de votre choix.'),
-    ];
+    final FirestoreService firestoreService = FirestoreService();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Leçons de ${language.name}'),
+        title: Text('Leçons de $language'),
       ),
-      body: ListView.builder(
-        itemCount: lessons.length,
-        itemBuilder: (context, index) {
-          final lesson = lessons[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ListTile(
-              title: Text(lesson.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(lesson.description),
-              trailing: const Icon(Icons.play_circle_outline),
-              onTap: () {
-                // Navigate to lesson details screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LessonDetailScreen(lesson: lesson),
-                  ),
-                );
-              },
-            ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: firestoreService.getLessonsForLanguage(language),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('Une erreur est survenue.'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final lessons = snapshot.data!.docs.map((doc) {
+            return Lesson.fromFirestore(doc.data() as Map<String, dynamic>, doc.id);
+          }).toList();
+
+          return ListView.builder(
+            itemCount: lessons.length,
+            itemBuilder: (context, index) {
+              final lesson = lessons[index];
+              return LessonItem(
+                title: lesson.title,
+                level: lesson.level,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LessonScreen(lessonId: lesson.id),
+                    ),
+                  );
+                },
+              );
+            },
           );
         },
       ),

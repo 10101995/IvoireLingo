@@ -1,13 +1,22 @@
 class Phrase {
   final String id;
-  final String frenchText;
-  final String translatedText;
-  final String audioUrl; // URL to the audio file
+  final String textFr;
+  final String textLocal;
+  final String? audioUrl;
 
   Phrase({
     required this.id,
-    required this.frenchText,
-    required this.translatedText,
-    required this.audioUrl,
+    required this.textFr,
+    required this.textLocal,
+    this.audioUrl,
   });
+
+  factory Phrase.fromMap(Map<String, dynamic> data) {
+    return Phrase(
+      id: data['id'] ?? '',
+      textFr: data['text_fr'] ?? '',
+      textLocal: data['text_local'] ?? '',
+      audioUrl: data['audio_url_ref'], 
+    );
+  }
 }
